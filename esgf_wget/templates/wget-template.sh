@@ -35,12 +35,17 @@ check_os() {
         Linux)
             ((debug)) && echo "Linux operating system detected"
             LINUX=1
-            MACOSX=0
+            BSD=0
             ;;
         Darwin)
             ((debug)) && echo "Mac OS X operating system detected"
             LINUX=0
-            MACOSX=1
+            BSD=1
+            ;;
+        *BSD)
+            ((debug)) && echo "BSD operating system detected"
+            LINUX=0
+            BSD=1
             ;;
         *)
             echo "Unrecognized OS [${os_name}]"
@@ -206,8 +211,8 @@ sha256sum_() {
 }
 
 get_mod_time_() {
-    if ((MACOSX)); then
-        #on a mac modtime is stat -f %m <file>
+    if ((BSD)); then
+        #on the BSDs, including macOS, modtime is stat -f %m <file>
         echo "$(stat -f %m $@)"
     else
         #on linux (cygwin) modtime is stat -c %Y <file>
