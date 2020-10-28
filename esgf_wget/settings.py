@@ -11,32 +11,12 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import configparser
-
-config = configparser.RawConfigParser()
-
-config_file = os.getenv('ESGF_WGET_CONFIG', default=None)
-
-if config_file is None or not os.path.isfile(config_file):
-    raise Exception('ESGF_WGET_CONFIG is not set, or is not a file.')
 
 try:
-    config.read(config_file)
-except IOError:
-    raise Exception('Unable to load config file.')
-
-SECRET_KEY = config['django'].get('SECRET_KEY', '')
-DEBUG = config['django'].getboolean('DEBUG', True)
-ALLOWED_HOSTS = config['django'].get('ALLOWED_HOSTS', '').split(',')
-DATA_UPLOAD_MAX_NUMBER_FIELDS = config['django'].getint(
-    'DATA_UPLOAD_MAX_NUMBER_FIELDS', 10240)
-
-ESGF_SOLR_URL = config['wget'].get('ESGF_SOLR_URL', '')
-ESGF_SOLR_SHARDS_XML = config['wget'].get('ESGF_SOLR_SHARDS_XML', '')
-WGET_SCRIPT_FILE_DEFAULT_LIMIT = config['wget'].getint(
-    'WGET_SCRIPT_FILE_DEFAULT_LIMIT', 1000)
-WGET_SCRIPT_FILE_MAX_LIMIT = config['wget'].getint(
-    'WGET_SCRIPT_FILE_MAX_LIMIT', 100000)
+    from esgf_wget.local_settings import *
+except ImportError:
+    print('Unable to load local_settings.py')
+    pass
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
