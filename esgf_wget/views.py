@@ -205,6 +205,18 @@ def generate_wget_script(request):
             for sv in split_value(v):
                 split_value_list.append(sv)
 
+        # If dataset_id values were passed
+        # then check if they follow the expected pattern
+        # (i.e. <facet1>.<facet2>...<facetn>.v<version>|<data_node>)
+        if param == FIELD_DATASET_ID:
+            id_pat = r'^[-\w]+(\.[-\w]+)*\.v\d{8}\|[-\w]+(\.[-\w]+)*$'
+            id_regex = re.compile(id_pat)
+            msg = 'The dataset_id, {id}, does not follow the format of ' \
+                  '<facet1>.<facet2>...<facetn>.v<version>|<data_node>'
+            for v in split_value_list:
+                if not id_regex.match(v):
+                    return HttpResponseBadRequest(msg.format(id=v))
+
         # If the list of allowed projects is not empty,
         # then check if the query is accessing projects not in the list
         if allowed_projects:
