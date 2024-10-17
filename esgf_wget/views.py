@@ -339,7 +339,7 @@ def generate_wget_script(request):
     timestamp = current_datetime.strftime('%Y/%m/%d %H:%M:%S')
 
     context = dict(timestamp=timestamp,
-                   url_params=f"dataset_id={dsid}",
+                   url_params=[dsid],
                    files=file_list,
                    warning_message=warning_message)
     wget_script = render(request, script_template_file, context)
