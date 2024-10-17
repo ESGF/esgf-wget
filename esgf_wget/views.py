@@ -272,7 +272,9 @@ def generate_wget_script(request):
 
     # Fetch files for the query
     file_list = {}
-    dsid = url_params["dataset_id"]
+    dsid = url_params.get("dataset_id","")
+    if "," in dsid:
+        dsid = dsid.split(',')
 
     qo = ESGGlobusQuery(settings.GLOBUS_UUID, "" )
     res = qo.query_file_records(dsid) #, crit=url_params)

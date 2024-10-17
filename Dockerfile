@@ -9,7 +9,7 @@ RUN apt update && \
       apt install -y --no-install-recommends python3 python3-pip && \
       rm -rf /var/lib/apy/lists && \
       useradd -M -u 10000 -U wgetapi && \
-      pip3 install gunicorn "django>=3.0,<3.1"
+      pip3 install gunicorn requests "django>=3.0,<3.1"
 USER wgetapi
 COPY --chown=10000:10000 esgf_wget esgf_wget
 COPY --chown=10000:10000 manage.py .
