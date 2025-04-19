@@ -25,7 +25,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: esgf/esgf-wget
+          images: ghcr.io/esgf/esgf-wget
           tags: |
             type=ref,event=pr
             type=semver,pattern={{version}}
