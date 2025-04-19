@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "esgf-wget.fullname" . }}-configmap
+  labels:
+    {{- include "esgf-wget.labels" . | nindent 4 }}
+data:
+  esgf-wget-config.cfg: |
+    [django]
+    DEBUG = False
+    ALLOWED_HOSTS = {{ .Values.wgetApi.allowedHosts | join "," }}
+    DATA_UPLOAD_MAX_NUMBER_FIELDS = {{ .Values.wgetApi.dataUploadMaxNumberFields }}
+
+    [wget]
+    WGET_SCRIPT_FILE_DEFAULT_LIMIT = {{ .Values.wgetApi.wgetScriptFileDefaultLimit }}
+    WGET_SCRIPT_FILE_MAX_LIMIT = {{ .Values.wgetApi.wgetScriptFileMaxLimit }}
+    WGET_MAX_DIR_LENGTH = {{ .Values.wgetApi.wgetMaxDirLength }}
+
+    GLOBUS_UUID = {{ .Values.wgetApi.globusUuid }}
