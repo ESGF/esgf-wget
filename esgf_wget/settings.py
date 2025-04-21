@@ -35,8 +35,8 @@ ALLOWED_HOSTS = config['django'].get('ALLOWED_HOSTS', '').split(',')
 DATA_UPLOAD_MAX_NUMBER_FIELDS = config['django'].getint(
     'DATA_UPLOAD_MAX_NUMBER_FIELDS', 10240)
 
-ESGF_SOLR_URL = config['wget'].get('ESGF_SOLR_URL', '')
-ESGF_SOLR_SHARDS_XML = config['wget'].get('ESGF_SOLR_SHARDS_XML', '')
+GLOBUS_UUID = config['wget'].get("GLOBUS_UUID", "")
+
 ESGF_ALLOWED_PROJECTS_JSON = config['wget'].get(
     'ESGF_ALLOWED_PROJECTS_JSON', '')
 WGET_SCRIPT_FILE_DEFAULT_LIMIT = config['wget'].getint(
