@@ -276,8 +276,9 @@ def generate_wget_script(request):
     if "," in dsid:
         dsid = dsid.split(',')
 
+    print(f"DEBUG: {dsid} ")
     qo = ESGGlobusQuery(settings.GLOBUS_UUID, "" )
-    res = qo.query_file_records(dsid) #, crit=url_params)
+    res = qo.query_file_records(dsid, wget=True) #, crit=url_params)
     num_files = len(res)
 
     for file_info in res:

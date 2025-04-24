@@ -1,5 +1,5 @@
 globus-sdk
 globus-cli
-esgcet==5.3.0b1
+esgcet==5.3.0b3
 requests
-django>=3.0,<3.1
+django>4.2.19,<5.0
