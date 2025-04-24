@@ -5,6 +5,7 @@ on:
     tags:
       - '[0-9]+.[0-9]+**'
   pull_request:
+  workflow_dispatch:
 
 jobs:
   release:
@@ -26,7 +27,7 @@ jobs:
         uses: helm/chart-releaser-action@v1.5.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          # CR_OWNER: <your_github_org_or_username> # Optional: defaults to repo owner
-          # CR_GIT_REPO: <your_repo_name>          # Optional: defaults to repo name
-          # CR_PACKAGE_PATH: ./path/to/your/chart # Optional: defaults to '.'
-          # CR_SKIP_EXISTING: true                # Optional: Skip if release/tag already exists
+          CR_OWNER: "ESGF"
+          CR_GIT_REPO: "esgf-wget"
+          CR_PACKAGE_PATH: chart/esgf-wget
+          CR_SKIP_EXISTING: true
