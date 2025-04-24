@@ -24,10 +24,8 @@ jobs:
       - name: Lint chart
         run: helm lint chart/esgf-wget
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.5.0
+        uses: helm/chart-releaser-action@v1.6.0
+        with:
+          charts_dir: chart/esgf-wget
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          CR_OWNER: "ESGF"
-          CR_GIT_REPO: "esgf-wget"
-          CR_PACKAGE_PATH: chart/esgf-wget
-          CR_SKIP_EXISTING: true
