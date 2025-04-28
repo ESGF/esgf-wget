@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  esgf-wget:
+  - apiVersion: v2
+    appVersion: 0.2.0-beta.6
+    created: "2025-04-28T19:57:00.125962485Z"
+    description: A Helm chart for ESGF wget
+    digest: 30a5349a9c152b163aa8f8e91b3c8245e07c52fbcaa22dbdceb9ae9aac46aad9
+    name: esgf-wget
+    type: application
+    urls:
+    - https://github.com/ESGF/esgf-wget/releases/download/esgf-wget-0.1.0/esgf-wget-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-04-28T19:57:00.125979064Z"
