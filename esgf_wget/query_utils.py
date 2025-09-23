@@ -9,6 +9,10 @@ import json
 import csv
 import os
 
+import pystac_client
+
+STAC_API = "https://data-challenge-04-discovery.api.stac.esgf-west.org"
+
 # reserved query keywords
 OFFSET = "offset"
 LIMIT = "limit"
@@ -240,3 +244,38 @@ def get_facets_from_solr():
     _facets = [f for f in facets if f not in NOT_FACETS]
 
     return facets
+
+def get_record(x):
+    fn = x[0].split('/')[-1]
+    return {'title': fn, 'url' : [x[0]], 'checksum' : x[1] , 'checksum_type' : 'sha256sum' } 
+
+def get_stac_results(dsids):
+
+    client = pystac_client.Client.open(STAC_API)
+    res = client.search(
+            collections=["CMIP6"],
+            ids=dsids
+        )
+    res_as_dicts = res.items_as_dicts()
+
+    items = list(res_as_dicts)
+    urls = []
+
+    for it in items:
+        assets = it['assets']
+        for k in assets:
+            assetdoc = assets[k]
+            if assetdoc.get('type', '') == 'application/netcdf':
+                urls.append([assetdoc['href'], assetdoc['file:checksum']] )
+            else:
+                assetsalt = assetdoc.get('alternate', {})
+                for altkey in assetsalt:
+                    assetrec = assetsalt[altkey]
+                    # application/netcdf
+                    if assetrec.get('type', '') == 'application/netcdf':
+                        urls.append([assetrec['href'], assetrec['file:checksum']] )
+                    else:
+                        if settings.DEBUG:
+                            print(f"missing from {k}")
+    recres = [get_record(x) for x in urls]
+    return recres

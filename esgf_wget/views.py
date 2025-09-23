@@ -6,7 +6,6 @@ from django.views.decorators.http import require_http_methods
 from django.conf import settings
 
 
-from esgcet.globus_query import ESGGlobusQuery
 
 import datetime
 import json
@@ -277,14 +276,14 @@ def generate_wget_script(request):
         dsid = dsid.split(',')
 
     print(f"DEBUG: {dsid} ")
-    qo = ESGGlobusQuery(settings.GLOBUS_UUID, "" )
-    res = qo.query_file_records(dsid, wget=True) #, crit=url_params)
+
+    res = get_stac_results(dsid)
     num_files = len(res)
 
     for file_info in res:
         filename = file_info['title']
-        checksum_type = file_info['checksum_type'][0]
-        checksum = file_info['checksum'][0]
+        checksum_type = file_info['checksum_type']
+        checksum = file_info['checksum']
         # Create directory structure from facet values
         # If the facet is not found, then use the empty path value
         dir_struct = []
@@ -307,13 +306,11 @@ def generate_wget_script(request):
         # Only add a file to the list if its file path is not already present
         if file_path not in file_list:
             for url in file_info['url']:
-                url_split = url.split('|')
-                if url_split[2] == 'HTTPServer':
-                    file_entry = dict(url=url_split[0],
-                                      checksum_type=checksum_type,
-                                      checksum=checksum)
-                    file_list[file_path] = file_entry
-                    break
+                file_entry = dict(url=url,
+                                    checksum_type=checksum_type,
+                                    checksum=checksum)
+                file_list[file_path] = file_entry
+                break
 
     # Limit the number of files to the maximum
     warning_message = None
